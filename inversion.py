@@ -1,14 +1,13 @@
-#Module for carrying out a numerical inversion of Laplace transforms.  
-#There are functions to generate Stehfest coefficients and to implement the Stehfest inversion method
+#Module with helper functions for carrying out a numerical inversion of Laplace transforms.  
+#There is a function to generate Stehfest coefficients
 
-N = 16
+import math
 
 def stehfestCoeff(N):    
     ''' Assume that N is an integer and N == 0
         Normally, the optimum value of N is determined as a result of a numerical experiment. As a reference, however, the range of 6 ≤ N ≤ 18 covers the most common values of N for transient flow problems. 
         http://petrowiki.org/Laplace_transformation_for_solving_transient_flow_problems
         Return list with the Stehfest coefficients'''
-    import math
     ln2 = math.log(2.0)
     N2 = N / 2 
     NV = 2 * N2
@@ -26,11 +25,17 @@ def stehfestCoeff(N):
         for k in range(int(kmin), int(kmax+1)):
             V[i] = V[i] + (math.pow(k, N2) / math.factorial(k)) * (math.factorial(2 * k) / math.factorial(2 * k - i - 1)) / math.factorial(N2 - k) / math.factorial(k - 1) / math.factorial(i + 1 - k)
         V[i] = sign * V[i]
+    return V
 
-        
-if __name__ == "__main__":
-    import sys
-    print(stehfestCoeff(int(sys.argv[1])))
+'''def inverseTransform(f, t): 
+    N = 16
+    Vs = inversion.stehfestCoeff(N)
+    rt = math.log(2.0) / t 
+    Sum = 0
+    for i in range(1, N+1):
+        s = i * rt
+        Sum = Sum + f
+        return rt * Sum'''
     
 
 
