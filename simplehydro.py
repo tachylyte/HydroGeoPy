@@ -98,15 +98,4 @@ def Darcy(**kw):
     else:
         raise Exception('Invalid inputs')   
     
-def travelTime(velocity, distance):
-    '''Return time of travel for distance'''
-    time = distance / velocity
-    return time
 
-def distanceTravelled(velocity, time):
-    distance = velocity * time
-    return distance
-
-def velocity(distance, time):
-    velocity = distance / time
-    return velocity

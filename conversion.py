@@ -1,18 +1,18 @@
 # Useful unit conversions
 
-def days(s):
+def secsToDays(s):
     '''Assume s is time in seconds and a positive integer or float.
     Return time in days'''
     days = s / (60 * 60 * 24) 
     return days
 
-def secs(d):
+def daysToSecs(d):
     '''Assume d is time in days and a positive integer or float.
     Return time in seconds'''
     secs = (60 * 60 * 24) * d
     return secs
 
-def year(d):
+def dayToYear(d):
     '''Assume d is time in days and a positive integer or float.
     Return time in years'''
     year = 365.25 / d
@@ -29,3 +29,11 @@ def mPerD(mPerS):
     Return mPerD'''
     mPerD = secs(mPerS)
     return mPerD
+
+def kgPerM3(####):    # Convert mg/l to kg/m^3
+    #####
+    return ###
+
+def mgPerL(####):       # Convert kg/m^3 to g/m^3 (same as mg/l)
+    #####
+    return ##
