@@ -46,15 +46,20 @@ c0 = conversion.kgPerM3(22)   # Convert kg/m^3 to g/m^3 (same as mg/l)
 # inversion of the numerical solutions in Laplace transform space
 N = 16   # Values between 12 and 16 often give acceptable results for contaminant transport
 
-# Fixed point at which to calculate contaminant mass flux
+# Fixed point at which to calculate contaminant concentration and mass flux
 x = 0.6
 
 # Time
 t = conversion.daysToSecs(6.9) #convert days to seconds
 # could try #  for t in range(secs(100)):
 
+
 flux = finiteFlux(t, v, De, R, deg, x, c0, L, n, 16)
 print(flux, 'kg/s/m2')
 print(flux * 1000000, 'mg/s/m2')
 print((((flux * 1000000) * 60 * 60 * 24) / 1000), 'g/day/m2')
 print('3.83e-1', ' final answer')
+
+dilututed concentration
+
+plots
