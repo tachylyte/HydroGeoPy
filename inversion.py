@@ -1,5 +1,5 @@
-#Module with helper functions for carrying out a numerical inversion of Laplace transforms.  
-#There is a function to generate Stehfest coefficients
+#Module with helper function for carrying out a numerical inversion of Laplace transforms.  
+#A function generates coefficients for the Stehfest inversion method for solutions in Laplace transform space
 
 import math
 
@@ -27,15 +27,7 @@ def stehfestCoeff(N):
         V[i] = sign * V[i]
     return V
 
-'''def inverseTransform(f, t): 
-    N = 16
-    Vs = inversion.stehfestCoeff(N)
-    rt = math.log(2.0) / t 
-    Sum = 0
-    for i in range(1, N+1):
-        s = i * rt
-        Sum = Sum + f
-        return rt * Sum'''
+
     
 
 
