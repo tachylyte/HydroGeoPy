@@ -29,3 +29,6 @@ def effectiveDiffusion(####):
     ######
     return De
 
+def dilution(####):
+    #######
+    return ####
