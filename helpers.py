@@ -58,13 +58,25 @@ def aveHorizK(*args):
     aveHorizK = sumKL / sumThickness 
     return aveHorizK
 
-def retardation(###):
-    #####
-    return ###
+def decayConstant(days):
+    '''Assume halflife in days as input.
+    Return first order decay rate in 1/s.'''
+    return 1 / daysToSec(days)
 
-def effectiveDiffusion(####):
-    ######
-    return De
+def halfLife(decay):
+    '''Assume decay rate in 1/s as input.
+    Return half life in days'''
+    return 1 / secsToDays(decay)
+
+def retardation(bulkD, n, Kd):
+    '''Assume inputs bulk density (kg/l), effective porosity (-), partition coefficient Kd (l/kg).
+    Return retardation factor.'''
+    return 1 + ((bulkD / n) * Kd)
+
+def effectiveDiff(Dw, tau):
+    '''Assume free water diffusion coefficient Dw (m^2/s) and tortuosity tau (-) is greater than 1.
+    Return effective diffusion coefficient De (m^2/s)'''.
+    return Dw / tau
 
 def dilution(####):
     #######
