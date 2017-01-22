@@ -4,8 +4,12 @@ def discharge(K, i, A, *args, **kwargs):
     Q = K * i * A
     return Q
 
-def gradient(Q, K, A):
+def gradient1(Q, K, A):
     i = Q / (K * A)
+    return i
+
+def gradient2(H, h, L):
+    i = (H - h) / L
     return i
 
 def area(Q, K, i):
@@ -33,7 +37,8 @@ def darcy(**kw):
     Calculate missing variable based on the inputs given.
     Returns the value.'''
     discharge_set = set("KiA")
-    gradient_set = set("QKA")
+    gradient1_set = set("QKA")
+    gardient2_set = set("HhL")
     area_set = set("QKi")
     specificDischarge1_set = set("QA")
     specificDischarge2_set = set("Ki")
@@ -42,8 +47,11 @@ def darcy(**kw):
     if set(kw.keys()) == discharge_set:
         Q = discharge(**kw)
         return Q
-    if set(kw.keys()) == gradient_set:
-        i = gradient(**kw)
+    if set(kw.keys()) == gradient1_set:
+        i = gradient1(**kw)
+        return i
+    if set(kw.keys()) == gradient2_set:
+        i = gradient2(**kw)
         return i
     if set(kw.keys()) == area_set:
         A = area(**kw)
@@ -68,7 +76,8 @@ def Darcy(**kw):
     Calculate missing variable based on the inputs given.
     Prints the value and says what it has calculated.'''
     discharge_set = set("KiA")
-    gradient_set = set("QKA")
+    gradient1_set = set("QKA")
+    gradient2_set = set("HhL")
     area_set = set("QKi")
     specificDischarge1_set = set("QA")
     specificDischarge2_set = set("Ki")
@@ -77,8 +86,11 @@ def Darcy(**kw):
     if set(kw.keys()) == discharge_set:
         Q = discharge(**kw)
         return print('Discharge, Q =', Q)
-    if set(kw.keys()) == gradient_set:
-        i = gradient(**kw)
+    if set(kw.keys()) == gradient1_set:
+        i = gradient1(**kw)
+        return print('Hydraulic gradient, i =', i)
+    if set(kw.keys()) == gradient2_set:
+        i = gradient2(**kw)
         return print('Hydraulic gradient, i =', i)
     if set(kw.keys()) == area_set:
         A = area(**kw)

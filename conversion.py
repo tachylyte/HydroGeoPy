@@ -30,10 +30,10 @@ def mPerD(mPerS):
     mPerD = secs(mPerS)
     return mPerD
 
-def kgPerM3(####):    # Convert mg/l to kg/m^3
-    #####
-    return ###
+def kgPerM3(mgl):    # Convert mg/l to kg/m^3
+    kgPerM3 = mgl /1000
+    return kgPerM3
 
-def mgPerL(####):       # Convert kg/m^3 to g/m^3 (same as mg/l)
-    #####
-    return ##
+def mgPerL(kgPerM3):       # Convert kg/m^3 to g/m^3 (same as mg/l)
+    mgl = 1000 * kgPerM3
+    return mgl

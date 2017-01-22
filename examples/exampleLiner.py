@@ -6,38 +6,45 @@
 # concentration in the higher K layer under the barrier is zero (a finite boundary condition).
 
 # Import the necessary modules
-import math              
+import math
+import pylab
 import inversion
+import conversion
 import simplehydro   
 import helpers
+import one_d_numerical
 
 # Liner geometry
-K1= ####       #  K of liner layer 1 (m/s)
-K2 = ####      #  K of liner layer 2 (m/s)
-L1 = ####       # Thickness of liner layer 1
-L2 = ####       # Thickness of liner layer 2
+K1= 1e-6       #  K of liner layer 1 (m/s)
+K2 = 1e-7      #  K of liner layer 2 (m/s)
+L1 = 0.3       # Thickness of liner layer 1
+L2 = 0.3       # Thickness of liner layer 2
 
-L =    # Total liner thickness (m)
+L = L1 + L2 # Total liner thickness (m)
 K = helpers.aveVertK(K1, K2, L1, L2)  # average vertical hydraulic conductivity (m/s)
 
 # Hydraulic gradient
-h2 = ##### # Head above liner top (m) [depth of ponded water]
-h1 = ##### # Head at base of liner (m) [is the high K layer underlying liner confined?]
-i =    # Hydraulic gradient (-)
+H = 3 # Head above liner top (m) [depth of ponded water]
+h = 1 # Head at base of liner (m) [is the high K layer underlying liner confined?]
+i =  (H - h) / L  # Hydraulic gradient (-)
 
 # Calculation of average liner groundwater flow velocity
-q = simplehydro.darcy(K, i)   # Specific discharge (m/s)
+q = K * i    # Specific discharge (m/s)
 n = 0.14             # Effective porosity (-)
-v = 1.9e-6          # Average linear velocity (m/s)  
+v = q / n          # Average linear velocity (m/s)  
 
 # Retardation
-R =   helpers.retardation()   #1.93e1  
+bulkD =  2.78  # Bulk density (kg/l or 1000kg/m^3)
+Kd =   2       # l/kg
+R = 1 + ((bulkD / n) * Kd)  #1.93e1   # Retardation  
 
 # Effective diffusion coefficient
 De = 1.15e-7
 
 # Biodegration
-deg = 1.46499e-9   # First order degration coefficient
+Half_life = 200 # days
+Half_life =  conversion.daysToSecs(Half_life)   ####
+deg =  helpers.decayConstant(Half_life)  #1.46499e-9   # First order degration coefficient
 
 # Contaminant source concentration
 c0 = conversion.kgPerM3(22)   # Convert kg/m^3 to g/m^3 (same as mg/l)
@@ -46,20 +53,69 @@ c0 = conversion.kgPerM3(22)   # Convert kg/m^3 to g/m^3 (same as mg/l)
 # inversion of the numerical solutions in Laplace transform space
 N = 16   # Values between 12 and 16 often give acceptable results for contaminant transport
 
-# Fixed point at which to calculate contaminant concentration and mass flux
-x = 0.6
+# Fixed point for breakthrough curve
+x = 0.55
 
 # Time
-t = conversion.daysToSecs(6.9) #convert days to seconds
+days = 90
+t = conversion.daysToSecs(days) #convert days to seconds
 # could try #  for t in range(secs(100)):
 
+# Concentration profile calculations
+xAxis, concFinite, concInfinite, fluxFinite, fluxInfinite = [], [], [], [], []
+i = 0.01
+while i < L:
+    xAxis.append(i)
+    conc1 = one_d_numerical.finiteConc(t, v, De, R, deg, i, c0, L, N) 
+    concFinite.append(conc1*1000)
+    conc2 = (one_d_numerical.infiniteConc(t, v, De, R, deg, i, c0, N)) 
+    concInfinite.append(conc2*1000)
+    flux1 = one_d_numerical.finiteFlux(t, v, De, R, deg, i, c0, L, n, N)
+    fluxFinite.append((((flux1 * 1000000) * 60 * 60 * 24) / 1000))
+    flux2 = one_d_numerical.infiniteFlux(t, v, De, R, deg, i, c0, n, N)
+    fluxInfinite.append((((flux2 * 1000000) * 60 * 60 * 24) / 1000))
+    i += 0.01
 
-flux = finiteFlux(t, v, De, R, deg, x, c0, L, n, 16)
-print(flux, 'kg/s/m2')
-print(flux * 1000000, 'mg/s/m2')
-print((((flux * 1000000) * 60 * 60 * 24) / 1000), 'g/day/m2')
-print('3.83e-1', ' final answer')
+pylab.figure(1)
+pylab.plot(xAxis, concFinite)
+pylab.plot(xAxis, concInfinite)
+title1 = 'Concentration profile at ' + str(days) + ' days'
+pylab.title(title1)
+pylab.figure(2)
+pylab.plot(xAxis, fluxFinite)
+title2 = 'Flux profile at ' + str(days) + ' days'
+pylab.title(title2)
+pylab.plot(xAxis, fluxInfinite)
+#pylab.show()
 
-dilututed concentration
+# Breakthrough profile calculations
+zAxis, zconcFinite, zconcInfinite, zfluxFinite, zfluxInfinite = [0], [0], [0], [0], [0]
+z = 1
+maxTime = 600
+while z < maxTime:
+    zAxis.append(z)
+    zconc1 = one_d_numerical.finiteConc(conversion.daysToSecs(z), v, De, R, deg, x, c0, L, N) 
+    zconcFinite.append(zconc1*1000)
+    zconc2 = (one_d_numerical.infiniteConc(conversion.daysToSecs(z), v, De, R, deg, x, c0, N)) 
+    zconcInfinite.append(zconc2*1000)
+    zflux1 = one_d_numerical.finiteFlux(conversion.daysToSecs(z), v, De, R, deg, x, c0, L, n, N)
+    zfluxFinite.append((((zflux1 * 1000000) * 60 * 60 * 24) / 1000))
+    zflux2 = one_d_numerical.infiniteFlux(conversion.daysToSecs(z), v, De, R, deg, x, c0, n, N)
+    zfluxInfinite.append((((zflux2 * 1000000) * 60 * 60 * 24) / 1000))
+    z += 1
 
-plots
+pylab.figure(3)
+pylab.plot(zAxis, zconcFinite)
+pylab.plot(zAxis, zconcInfinite)
+title3 = 'Concentration breakthrough at ' + str(x) + 'm'
+pylab.title(title3)
+pylab.figure(4)
+pylab.plot(zAxis, zfluxFinite)
+title4 = 'Flux breakthrough at ' + str(x) + 'm'
+pylab.title(title4)
+pylab.plot(zAxis, zfluxInfinite)
+pylab.show()
+
+
+
+

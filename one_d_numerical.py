@@ -56,5 +56,5 @@ def infiniteFlux(t, v, De, R, deg, x, c0, n, N):
     Sum = 0
     for i in range(1, N+1):
         s = i * rt
-        Sum = Sum + Vs[i - 1] * (((c0 * n) / s) * ((v - (De * ((v - ((v ** 2) + (4 * De * R * (s + deg))) ^ 0.5) / (2 * De)))) * math.exp(((v - (v ** 2 + (4 * De * R * (s + deg))) ** (1 / 2)) / (2 * De)) * x)))
+        Sum = Sum + Vs[i - 1] * (((c0 * n) / s) * ((v - (De * ((v - ((v ** 2) + (4 * De * R * (s + deg))) ** 0.5) / (2 * De)))) * math.exp(((v - (v ** 2 + (4 * De * R * (s + deg))) ** (1 / 2)) / (2 * De)) * x)))
     return rt * Sum

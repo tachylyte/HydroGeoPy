@@ -1,4 +1,5 @@
 # Useful helper functions
+import conversion
 
 def travelTime(velocity, distance):
     '''Assume veolicty and distance provided.
@@ -61,12 +62,12 @@ def aveHorizK(*args):
 def decayConstant(days):
     '''Assume halflife in days as input.
     Return first order decay rate in 1/s.'''
-    return 1 / daysToSec(days)
+    return 1 / conversion.daysToSecs(days)
 
 def halfLife(decay):
     '''Assume decay rate in 1/s as input.
     Return half life in days'''
-    return 1 / secsToDays(decay)
+    return 1 / conversion.secsToDays(decay)
 
 def retardation(bulkD, n, Kd):
     '''Assume inputs bulk density (kg/l), effective porosity (-), partition coefficient Kd (l/kg).
@@ -75,9 +76,6 @@ def retardation(bulkD, n, Kd):
 
 def effectiveDiff(Dw, tau):
     '''Assume free water diffusion coefficient Dw (m^2/s) and tortuosity tau (-) is greater than 1.
-    Return effective diffusion coefficient De (m^2/s)'''.
+    Return effective diffusion coefficient De (m^2/s)'''
     return Dw / tau
 
-def dilution(####):
-    #######
-    return ####
