@@ -4,7 +4,7 @@ import inversion
 import math
 
 def finiteConc(t, v, De, R, deg, x, c0, L, N):
-    ''' t is time (T), v is velocity (L/T), De is effective diffusion coefficient (L^2/T), 
+    ''' t is time (T), v is velocity (L/T), De is effective hydrodynamic dispersion (including diffusion) (L^2/T), 
     	R is retardation (-), lamda is first order decay constant (1/T), x is position along path (L),
     	C0 is source concentration (M/L^3), L is pathway length (L), n is effective porosity (-), N is input variable stehfestCoeff().
     	Return concentration (M/L^3) at position x'''
@@ -17,7 +17,7 @@ def finiteConc(t, v, De, R, deg, x, c0, L, N):
     return rt * Sum
 
 def finiteFlux(t, v, De, R, deg, x, c0, L, n, N):
-    ''' t is time (T), v is velocity (L/T), De is effective diffusion coefficient (L^2/T), 
+    ''' t is time (T), v is velocity (L/T), De is effective hydrodynamic dispersion (including diffusion) (L^2/T), 
     	R is retardation (-), lamda is first order decay constant (1/T), x is position along path (L),
     	C0 is source concentration (M/L^3), L is pathway length (L), n is effective porosity (-), N is input variable stehfestCoeff().
     	Return concentration (M/L^3) at position x'''
@@ -34,7 +34,7 @@ def finiteFlux(t, v, De, R, deg, x, c0, L, n, N):
     return rt * Sum
 
 def infiniteConc(t, v, De, R, deg, x, c0, N):
-    ''' t is time (T), v is velocity (L/T), De is effective diffusion coefficient (L^2/T), 
+    ''' t is time (T), v is velocity (L/T), De is effective hydrodynamic dispersion (including diffusion) (L^2/T), 
     	R is retardation (-), lamda is first order decay constant (1/T), x is position along path (L),
     	C0 is source concentration (M/L^3), n is effective porosity (-), N is input variable stehfestCoeff().
     	Return concentration (M/L^3) at position x'''
@@ -47,7 +47,7 @@ def infiniteConc(t, v, De, R, deg, x, c0, N):
     return rt * Sum
 
 def infiniteFlux(t, v, De, R, deg, x, c0, n, N):
-    ''' t is time (T), v is velocity (L/T), De is effective diffusion coefficient (L^2/T), 
+    ''' t is time (T), v is velocity (L/T), De is effective hydrodynamic dispersion (including diffusion) (L^2/T), 
     	R is retardation (-), lamda is first order decay constant (1/T), x is position along path (L),
     	C0 is source concentration (M/L^3), n is effective porosity (-), N is input variable stehfestCoeff().
     	Return concentration (M/L^3) at position x'''
