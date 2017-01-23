@@ -79,3 +79,11 @@ def effectiveDiff(Dw, tau):
     Return effective diffusion coefficient De (m^2/s)'''
     return Dw / tau
 
+def one_d_dispersion(L, v, Dw, tau):
+    '''Assume L is pathway length (m), dispersivity is assumed as 10% of pathway length in x-direction, 
+    v is the average linear groundwater flow velocity (m/s), Dw is free water difussion coefficient (m^2/s),
+    tau is tortuosity (greater than 1).
+    Return hydrodynamic dispersion, D (m^2/s).'''
+    alpha = L * 0.1
+    D = (alpha * v) + helpers.effectiveDiff(Dw, tau)
+    return D
