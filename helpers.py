@@ -85,5 +85,5 @@ def one_d_dispersion(L, v, Dw, tau):
     tau is tortuosity (greater than 1).
     Return hydrodynamic dispersion, D (m^2/s).'''
     alpha = L * 0.1
-    D = (alpha * v) + helpers.effectiveDiff(Dw, tau)
+    D = (alpha * v) + effectiveDiff(Dw, tau)
     return D
