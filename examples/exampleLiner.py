@@ -66,7 +66,7 @@ t = conversion.daysToSecs(days) #convert days to seconds
 # Concentration profile calculations
 xAxis, concFinite, concInfinite, fluxFinite, fluxInfinite = [], [], [], [], []
 i = 0.01
-while i < L:
+while i <= L:
     xAxis.append(i)
     conc1 = one_d_numerical.finiteConc(t, v, De, R, deg, i, c0, L, N) 
     concFinite.append(conc1*1000)
@@ -94,7 +94,7 @@ pylab.plot(xAxis, fluxInfinite)
 zAxis, zconcFinite, zconcInfinite, zfluxFinite, zfluxInfinite = [0], [0], [0], [0], [0]
 z = 1
 maxTime = 600
-while z < maxTime:
+while z <= maxTime:
     zAxis.append(z)
     zconc1 = one_d_numerical.finiteConc(conversion.daysToSecs(z), v, De, R, deg, x, c0, L, N) 
     zconcFinite.append(zconc1*1000)
