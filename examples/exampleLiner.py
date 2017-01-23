@@ -24,8 +24,8 @@ L = L1 + L2 # Total liner thickness (m)
 K = helpers.aveVertK(K1, K2, L1, L2)  # average vertical hydraulic conductivity (m/s)
 
 # Hydraulic gradient
-H = 3 # Head above liner top (m) [depth of ponded water]
-h = 1 # Head at base of liner (m) [is the high K layer underlying liner confined?]
+H = 1.6 # Head above liner top (m) [depth of ponded water]
+h = 0 # Head at base of liner (m) [is the high K layer underlying liner confined?]
 i =  (H - h) / L  # Hydraulic gradient (-)
 
 # Calculation of average liner groundwater flow velocity
@@ -34,15 +34,17 @@ n = 0.14             # Effective porosity (-)
 v = q / n          # Average linear velocity (m/s)  
 
 # Retardation
-bulkD =  2.78  # Bulk density (kg/l or 1000kg/m^3)
-Kd =   2       # l/kg
+bulkD =  2.02  # Bulk density (kg/l or 1000kg/m^3)
+Kd =   1.265       # l/kg
 R = 1 + ((bulkD / n) * Kd)  #1.93e1   # Retardation  
 
-# Effective diffusion coefficient
-De = 1.15e-7
+# Effective hydrodynamic dispersion coefficient
+Dw = 1.96e-9  # Free water diffusion coefficient (m^2/s)
+tau = 5    # Tortuosity (-)
+De = helpers.one_d_dispersion(L, v, Dw, tau)
 
 # Biodegration
-Half_life = 200 # days
+Half_life = 5.48e3 # days
 Half_life =  conversion.daysToSecs(Half_life)   ####
 deg =  helpers.decayConstant(Half_life)  #1.46499e-9   # First order degration coefficient
 
@@ -56,7 +58,7 @@ N = 16   # Values between 12 and 16 often give acceptable results for contaminan
 # Fixed point for breakthrough curve
 x = 0.55
 
-# Time
+# Time for fixed concentration profile
 days = 90
 t = conversion.daysToSecs(days) #convert days to seconds
 # could try #  for t in range(secs(100)):
