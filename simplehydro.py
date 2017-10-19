@@ -21,7 +21,7 @@ def specificDischarge1(Q, A):
     return q
 
 def specificDischarge2(K, i):
-    q = k * i
+    q = K * i
     return q
 
 def velocity1(q, n):
@@ -29,7 +29,7 @@ def velocity1(q, n):
     return v
 
 def velocity2(K, i, n):
-    v = velocity1(K, i) / n
+    v = specificDischarge2(K, i) / n
     return v
     
 def darcy(**kw):
@@ -110,4 +110,11 @@ def Darcy(**kw):
     else:
         raise Exception('Invalid inputs')   
     
-
+def plugFlow(t, v, R, x, c0):
+    '''Assume time t (s), average linear groundwater veolicty v (m/s),
+    retardation R (-), distance x (m) and c0 is source concentration (kg/m^3).
+    Return concentration at specified distance and time.'''
+    if (t * (abs(v) / R)) > x:
+        return c0
+    else:
+        return 0

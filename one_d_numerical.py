@@ -4,9 +4,9 @@ import inversion
 import math
 
 def finiteConc(t, v, De, R, deg, x, c0, L, N):
-    ''' t is time (T), v is velocity (L/T), De is effective diffusion coefficient (L^2/T), 
-    	R is retardation (-), lamda is first order decay constant (1/T), x is position along path (L),
-    	C0 is source concentration (M/L^3), L is pathway length (L), n is effective porosity (-), N is input variable stehfestCoeff().
+    ''' t is time (T), v is velocity (L/T), De is effective hydrodynamic dispersion (including diffusion) (L^2/T), 
+    	R is retardation (-), deg is first order decay constant (1/T), x is position along path (L),
+    	c0 is source concentration (M/L^3), L is pathway length (L), n is effective porosity (-), N is input variable stehfestCoeff().
     	Return concentration (M/L^3) at position x'''
     Vs = inversion.stehfestCoeff(N)
     rt = math.log(2.0) / t
@@ -17,9 +17,9 @@ def finiteConc(t, v, De, R, deg, x, c0, L, N):
     return rt * Sum
 
 def finiteFlux(t, v, De, R, deg, x, c0, L, n, N):
-    ''' t is time (T), v is velocity (L/T), De is effective diffusion coefficient (L^2/T), 
-    	R is retardation (-), lamda is first order decay constant (1/T), x is position along path (L),
-    	C0 is source concentration (M/L^3), L is pathway length (L), n is effective porosity (-), N is input variable stehfestCoeff().
+    ''' t is time (T), v is velocity (L/T), De is effective hydrodynamic dispersion (including diffusion) (L^2/T), 
+    	R is retardation (-), deg is first order decay constant (1/T), x is position along path (L),
+    	c0 is source concentration (M/L^3), L is pathway length (L), n is effective porosity (-), N is input variable stehfestCoeff().
     	Return concentration (M/L^3) at position x'''
     Vs = inversion.stehfestCoeff(N)
     rt = math.log(2.0) / t
@@ -34,9 +34,9 @@ def finiteFlux(t, v, De, R, deg, x, c0, L, n, N):
     return rt * Sum
 
 def infiniteConc(t, v, De, R, deg, x, c0, N):
-    ''' t is time (T), v is velocity (L/T), De is effective diffusion coefficient (L^2/T), 
-    	R is retardation (-), lamda is first order decay constant (1/T), x is position along path (L),
-    	C0 is source concentration (M/L^3), n is effective porosity (-), N is input variable stehfestCoeff().
+    ''' t is time (T), v is velocity (L/T), De is effective hydrodynamic dispersion (including diffusion) (L^2/T), 
+    	R is retardation (-), deg is first order decay constant (1/T), x is position along path (L),
+    	c0 is source concentration (M/L^3), n is effective porosity (-), N is input variable stehfestCoeff().
     	Return concentration (M/L^3) at position x'''
     Vs = inversion.stehfestCoeff(N)
     rt = math.log(2.0) / t
@@ -47,14 +47,14 @@ def infiniteConc(t, v, De, R, deg, x, c0, N):
     return rt * Sum
 
 def infiniteFlux(t, v, De, R, deg, x, c0, n, N):
-    ''' t is time (T), v is velocity (L/T), De is effective diffusion coefficient (L^2/T), 
-    	R is retardation (-), lamda is first order decay constant (1/T), x is position along path (L),
-    	C0 is source concentration (M/L^3), n is effective porosity (-), N is input variable stehfestCoeff().
-    	Return concentration (M/L^3) at position x'''
+    ''' t is time (T), v is velocity (L/T), De is effective hydrodynamic dispersion (including diffusion) (L^2/T), 
+    	R is retardation (-), deg is first order decay constant (1/T), x is position along path (L),
+    	c0 is source concentration (M/L^3), n is effective porosity (-), N is input variable stehfestCoeff().
+    	Return flux at position x'''
     Vs = inversion.stehfestCoeff(N)
     rt = math.log(2.0) / t
     Sum = 0
     for i in range(1, N+1):
         s = i * rt
-        Sum = Sum + Vs[i - 1] * (((c0 * n) / s) * ((v - (De * ((v - ((v ** 2) + (4 * De * R * (s + deg))) ** 0.5) / (2 * De)))) * math.exp(((v - (v ** 2 + (4 * De * R * (s + deg))) ** (1 / 2)) / (2 * De)) * x)))
+        Sum = Sum + Vs[i - 1] * (((c0 * n) / s) * ((v - (De * ((v - ((v ** 2) + (4 * De * R * (s + deg))) ** 0.5) / (2 * De)))) * math.exp(((v - (v ** 2 + (4 * De * R * (s + deg))) ** 0.5) / (2 * De)) * x)))
     return rt * Sum

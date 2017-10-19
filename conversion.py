@@ -18,6 +18,12 @@ def dayToYear(d):
     year = 365.25 / d
     return year
 
+def yearToDay(y):
+    '''Assume y is time in years and a positive integer or float.
+    Return time in days'''
+    day = y * 365.25
+    return day
+
 def mPerS(mPerD):
     '''Assume mPerD is a positive integer or float.
     Return mPerS'''
