@@ -1,5 +1,6 @@
 # Useful helper functions
 import conversion
+import math
 
 def travelTime(velocity, distance):
     '''Assume veolicty and distance provided.
@@ -59,15 +60,15 @@ def aveHorizK(*args):
     aveHorizK = sumKL / sumThickness 
     return aveHorizK
 
-def decayConstant(days):
-    '''Assume halflife in days as input.
-    Return first order decay rate in 1/s.'''
-    return 1 / conversion.daysToSecs(days)
+def decayConstant(time):
+    '''Assume halflife (T) as input.
+    Return first order decay rate in 1/T.'''
+    return math.log(2) / time
 
 def halfLife(decay):
-    '''Assume decay rate in 1/s as input.
-    Return half life in days'''
-    return 1 / conversion.secsToDays(decay)
+    '''Assume decay rate in 1/T as input.
+    Return half life (T).'''
+    return math.log(2) / decay
 
 def retardation(bulkD, n, Kd):
     '''Assume inputs bulk density (kg/l), effective porosity (-), partition coefficient Kd (l/kg).
@@ -79,11 +80,35 @@ def effectiveDiff(Dw, tau):
     Return effective diffusion coefficient De (m^2/s)'''
     return Dw / tau
 
-def one_d_dispersion(L, v, Dw, tau):
+def one_d_dispersion(L, v, Dw, tau, disp=0.1):
     '''Assume L is pathway length (m), dispersivity is assumed as 10% of pathway length in x-direction, 
     v is the average linear groundwater flow velocity (m/s), Dw is free water difussion coefficient (m^2/s),
-    tau is tortuosity (greater than 1).
+    tau is tortuosity (greater than 1).  Disp is the fraction of path length
+    used to calculate dispersivity.  The default which does not needs to be specified
+    is 0.1 and for a negative velocity (advection against dispersion) disp is set at 0.
     Return hydrodynamic dispersion, D (m^2/s).'''
-    alpha = L * 0.1
+    if v < 0:
+        alpha = 0
+    else:
+        alpha = L * disp
     D = (alpha * v) + effectiveDiff(Dw, tau)
+    return D
+
+def taylorDiffusion(n, poreThroat, v, Dw):
+    Dtay = (n * poreThroat**2 * ((1.5 * v)**2))/(192*Dw)
+    return Dtay
+    
+def one_d_dispTaylor(L, v, Dw, tau, Dtay, disp=0.1):
+    '''Assume L is pathway length (m), dispersivity is assumed as 10% of pathway length in x-direction, 
+    v is the average linear groundwater flow velocity (m/s), Dw is free water difussion coefficient (m^2/s),
+    tau is tortuosity (greater than 1).  Disp is the fraction of path length
+    used to calculate dispersivity.  The default which does not needs to be specified
+    is 0.1 and for a negative velocity (advection against dispersion) disp is set at 0.
+    Return hydrodynamic dispersion, D (m^2/s).'''
+    if v < 0:
+        alpha = 0
+    else:
+        alpha = L * disp
+    D = (alpha * v) + effectiveDiff(Dw, tau)
+    print('dispersivity = ' + str(alpha))
     return D
