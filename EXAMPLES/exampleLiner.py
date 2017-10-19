@@ -60,13 +60,13 @@ N = 16   # Values between 12 and 16 often give acceptable results for contaminan
 x = 0.45
 
 # Time for fixed concentration profile
-days = 250
+days = 90
 t = conversion.daysToSecs(days) #convert days to seconds
 # could try #  for t in range(secs(100)):
 
 # Concentration profile calculations
-xAxis, concPlug, concAnal, concFinite, concInfinite, fluxPlug, fluxFinite, fluxInfinite = [], [], [], [], [], [], [], []
-i = 0.005
+xAxis, concFinite, concInfinite, fluxFinite, fluxInfinite = [], [], [], [], []
+i = 0.01
 while i <= L:
     xAxis.append(i)
     plugConc = simplehydro.plugFlow(t, v, R, i, c0)
